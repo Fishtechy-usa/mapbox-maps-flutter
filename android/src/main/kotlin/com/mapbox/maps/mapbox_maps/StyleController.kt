@@ -556,6 +556,15 @@ class StyleController(private val context: Context, private val styleManager: Ma
     }
   }
 
+  override fun removeStyleTerrain( callback: (Result<Unit>) -> Unit) {
+    val expected = styleManager.setStyleTerrain(com.mapbox.bindgen.Value.nullValue())
+    if (expected.isError) {
+      callback(Result.failure(Throwable(expected.error)))
+    } else {
+      callback(Result.success(Unit))
+    }
+  }
+
   override fun setStyleTerrain(properties: String, callback: (Result<Unit>) -> Unit) {
     val expected = styleManager.setStyleTerrain(properties.toValue())
     if (expected.isError) {

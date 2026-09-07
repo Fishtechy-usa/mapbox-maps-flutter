@@ -259,6 +259,11 @@ final class StyleController: StyleManager {
         completion(.success(sourcesInfos))
     }
 
+    func removeStyleTerrain(completion: @escaping (Result<Void, Error>) -> Void) {
+        styleManager.removeTerrain()
+        completion(.success(()))
+    }
+
     func setStyleTerrain(properties: String, completion: @escaping (Result<Void, Error>) -> Void) {
         let data = properties.data(using: String.Encoding.utf8)!
         let jsonObject = try? JSONSerialization.jsonObject(with: data, options: [])

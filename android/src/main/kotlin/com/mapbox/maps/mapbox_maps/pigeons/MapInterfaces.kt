@@ -6227,6 +6227,7 @@ interface StyleManager {
    *
    * @return A string describing an error if the operation was not successful, empty otherwise.
    */
+  fun removeStyleTerrain(callback: (Result<Unit>) -> Unit)
   fun setStyleTerrain(properties: String, callback: (Result<Unit>) -> Unit)
   /**
    * Gets the value of a style terrain property.
@@ -7277,6 +7278,23 @@ interface StyleManager {
             val propertyArg = args[1] as String
             val valueArg = args[2] as Any
             api.setStyleLightProperty(idArg, propertyArg, valueArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(wrapError(error))
+              } else {
+                reply.reply(wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.mapbox_maps_flutter.StyleManager.removeStyleTerrain$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            api.removeStyleTerrain() { result: Result<Unit> ->
               val error = result.exceptionOrNull()
               if (error != null) {
                 reply.reply(wrapError(error))

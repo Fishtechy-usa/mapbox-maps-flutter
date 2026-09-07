@@ -5299,6 +5299,7 @@ protocol StyleManager {
   /// @param properties A map of style terrain properties values, with their names as a key.
   ///
   /// @return A string describing an error if the operation was not successful, empty otherwise.
+  func removeStyleTerrain(completion: @escaping (Result<Void, Error>) -> Void)
   func setStyleTerrain(properties: String, completion: @escaping (Result<Void, Error>) -> Void)
   /// Gets the value of a style terrain property.
   ///
@@ -6533,6 +6534,21 @@ class StyleManagerSetup {
     /// @param properties A map of style terrain properties values, with their names as a key.
     ///
     /// @return A string describing an error if the operation was not successful, empty otherwise.
+    let removeStyleTerrainChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.mapbox_maps_flutter.StyleManager.removeStyleTerrain\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      removeStyleTerrainChannel.setMessageHandler { message, reply in
+        api.removeStyleTerrain() { result in
+          switch result {
+          case .success:
+            reply(wrapResult(nil))
+          case .failure(let error):
+            reply(wrapError(error))
+          }
+        }
+      }
+    } else {
+      removeStyleTerrainChannel.setMessageHandler(nil)
+    }
     let setStyleTerrainChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.mapbox_maps_flutter.StyleManager.setStyleTerrain\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setStyleTerrainChannel.setMessageHandler { message, reply in
