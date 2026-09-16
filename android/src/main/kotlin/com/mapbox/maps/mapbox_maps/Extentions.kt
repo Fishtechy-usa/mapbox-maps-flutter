@@ -854,7 +854,7 @@ fun TileRegionEstimateOptions.toTileRegionEstimateOptions(): com.mapbox.common.T
   return com.mapbox.common.TileRegionEstimateOptions(
     this.errorMargin.toFloat(),
     this.preciseEstimationTimeout.toLong(),
-    this.preciseEstimationTimeout.toLong(),
+    this.timeout.toLong(),
     this.extraOptions?.toValue()
   )
 }
